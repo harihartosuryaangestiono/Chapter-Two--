@@ -110,24 +110,26 @@ export function LoveQuiz() {
 
                 <div className="grid gap-4">
                   {currentQuestion.options.map((option, index) => {
-                    const isCorrect = option.isCorrect;
-                    const showCorrect = showFeedback && isCorrect;
-                    const showWrong = showFeedback && selected === index && !isCorrect;
+                    const isSelected = showFeedback && selected === index;
 
                     return (
                       <button
                         type="button"
                         key={option.label}
+                        disabled={selected !== null}
                         onClick={() => handleAnswer(index)}
-                        className={`border-b px-2 py-4 text-left text-base transition ${
-                          showCorrect
-                            ? "border-[#8ec7a2] text-[#2d7a5a]"
-                            : showWrong
-                              ? "border-[#f1b1c1] text-[#8d4d60]"
-                              : "border-[#d989a5]/25 text-[#80576A] hover:pl-4 hover:border-[#d989a5]/70"
+                        className={`flex w-full items-center justify-between gap-4 border-b px-2 py-4 text-left text-base transition ${
+                          isSelected
+                            ? "border-[#c77795] bg-[#f7dde6]/50 text-[#80576A]"
+                            : "border-[#d989a5]/25 text-[#80576A] hover:pl-4 hover:border-[#d989a5]/70"
                         }`}
                       >
                         {option.label}
+                        {isSelected && (
+                          <span className="shrink-0 text-sm font-semibold text-[#c77795]">
+                            Pilihan Dinda ✓
+                          </span>
+                        )}
                       </button>
                     );
                   })}
@@ -156,8 +158,25 @@ export function LoveQuiz() {
                   ? "Not bad at all. You know us a little too well."
                   : "You still win because you are my favorite person, obviously."}
             </p>
+            <div className="mx-auto mt-8 max-w-2xl text-left">
+              <h5 className="mb-4 text-center text-sm font-semibold uppercase tracking-[0.2em] text-[#c77795]">
+                Jawaban yang akan dikirim
+              </h5>
+              <ol className="space-y-4">
+                {loveQuizQuestions.map((question, index) => (
+                  <li key={question.id} className="border-b border-[#d989a5]/25 pb-3">
+                    <p className="text-sm text-[#80576A]/70">
+                      {index + 1}. {question.question}
+                    </p>
+                    <p className="mt-1 font-medium text-[#80576A]">
+                      {question.options[answers[index] ?? -1]?.label ?? "Belum dijawab"}
+                    </p>
+                  </li>
+                ))}
+              </ol>
+            </div>
             <p className="mt-5 text-sm text-[#80576A]/70">
-              Mau kasih tahu aku jawabanmu? Kirim hasilnya lewat WhatsApp ♡
+              Cek dulu pilihanmu di atas. Kalau sudah sesuai, kirim hasilnya lewat WhatsApp ♡
             </p>
             <div className="mt-4 flex justify-center">
               <Button
